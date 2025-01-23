@@ -1,0 +1,85 @@
+.nav {
+  margin: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navItemFirst {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.greeting {
+  color: #181820;
+  font-size: 18px;
+  font-weight: 700;
+}
+.navIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}
+.date {
+  color: #878ba9;
+  font-weight: 400;
+  margin-left: 24px;
+}
+
+.navItemSecond {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: 40px;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: #1b48da;
+  color: #fff;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.search {
+  position: relative;
+}
+.input {
+  color: #878ba9;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #ececf2;
+  padding: 10px 16px 10px 32px;
+  outline: none;
+  border-radius: 8px;
+}
+.input::placeholder {
+  color: #878ba9;
+}
+.searchBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px;
+}
+.navItemLast {
+  background-color: #fde48a;
+  display: flex;
+  align-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  justify-content: center;
+  color: #923e0e;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
