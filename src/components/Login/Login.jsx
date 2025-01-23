@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import styles from "./login.module.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import mainLogo from "../../assets/main-logo.png";
+import logo from "../../assets/cuvette-logo.png";
+import Btn from "../../components/LoginSignBtn/Btn";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const[loading, setLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -44,73 +45,95 @@ const Login = () => {
     return true;
   };
 
-  
-
   const handleSubmit = async (e) => {
-        e.preventDefault();
-        if(validateError()) {
-            try {
-                setLoading(true)
-                const response = await fetch(`${BACKEND_URL}/login`, {
-                    method:"POST",
-                    headers:{
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(formData),
-                });
-                const data = await response.json();
-                if(response.ok){
-                    toast.success("Login successful! Welcome back!");
-                    setFormData({
-                        email:"",
-                        password:"",
-                    });
-                    navigate(`/`);
-
-                }
-                else{
-                    toast.error(data.message || "Login failed")
-                }
-            } catch (error) {
-                toast.error("Network error. Please try again later");
-            } finally{
-                setLoading(false);
-            }
+    e.preventDefault();
+    if (validateError()) {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BACKEND_URL}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (response.ok) {
+          toast.success("Login successful! Welcome back!");
+          setFormData({
+            email: "",
+            password: "",
+          });
+          navigate(`/`);
+        } else {
+          toast.error(data.message || "Login failed");
         }
+      } catch (error) {
+        toast.error("Network error. Please try again later");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form noValidate>
-        <div>
-          <label htmlFor="Email">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            className={styles.input}
-            onChange={inputHandler}
-          />
+    <>
+      <div className={styles.container}>
+        <div className={styles.logoWrapper}>
+          <img src={mainLogo} alt="logo" className={styles.logo} />
+          <img src={logo} alt="cuvette logo" className={styles.cuvetteLogo} />
         </div>
-        <div>
-          <label htmlFor="password">password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            className={styles.input}
-            onChange={inputHandler}
-          />
+
+        <div className={styles.halfContainer}>
+          <nav className={styles.nav}>
+            <Btn />
+          </nav>
+
+          <div className={styles.wrapper}>
+            <div className={styles.formContainer}>
+              <h2 className={styles.title}>Login</h2>
+              <form noValidate className={styles.form}>
+                <div className={styles.inputContainer}>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    className={styles.input}
+                    onChange={inputHandler}
+                    placeholder="Email id"
+                  />
+                </div>
+
+                <div className={styles.inputContainer}>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    className={styles.input}
+                    onChange={inputHandler}
+                    placeholder="Password"
+                  />
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  className={styles.btn}
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Register"}
+                </button>
+                <p className={styles.footerText}>
+                  Don’t have an account?
+                  <Link to="/signup" className={styles.link}>
+                    SignUp
+                  </Link>
+                </p>
+              </form>
+            </div>
+          </div>
         </div>
-      <button
-      onClick={handleSubmit} className={styles.btn}
-      disabled={loading}
-      >
-        {loading ? "Logging..." : "Log in"}
-      </button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,3 +1,101 @@
-.btn{
-    cursor: pointer;
+.container {
+  display: flex;
+  overflow-y: hidden;
+}
+
+.logoWrapper {
+  width: 40%;
+  height: 100vh;
+}
+
+.logo {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.cuvetteLogo {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+.nav {
+  display: flex;
+  justify-content: end;
+  margin-right: 48px;
+  margin-top: 32px;
+}
+
+.halfContainer {
+  width: 60%;
+  height: calc(100vh - 160px);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 27.32px;
+  color: #3b3c51;
+  margin-left: 16px;
+  margin-bottom: 80px;
+}
+.wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formContainer {
+  width: 540px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form {
+  padding: 0 16px;
+  width: 100%;
+}
+
+.inputContainer {
+  margin-bottom: 18px;
+}
+
+.input {
+  padding: 8px 16px;
+  outline: none;
+  font-size: 18px;
+  font-weight: 600;
+  border: 1px solid #3b3c51;
+  border-radius: 4px;
+  width: 100%;
+}
+.input::placeholder {
+  color: #b3b3b3;
+}
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #fff;
+  background-color: #1b48da;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.footerText {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 21.86px;
+}
+.link {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
 }

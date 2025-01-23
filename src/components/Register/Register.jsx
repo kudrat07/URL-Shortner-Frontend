@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "./register.module.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import mainLogo from "../../assets/main-logo.png";
+import logo from "../../assets/cuvette-logo.png";
+import Btn from "../../components/LoginSignBtn/Btn"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -38,7 +41,7 @@ const Register = () => {
       newError.email =
         "Invalid email format. Please use a valid format like example@domain.com";
     }
-    if(!formData.mobile.trim()){
+    if (!formData.mobile.trim()) {
       newError.mobile = "Mobile number is required";
     } else if (!/^[0-9]\d{9}$/.test(formData.mobile)) {
       newError.mobile = "Invalid mobile number";
@@ -87,86 +90,105 @@ const Register = () => {
         if (response.ok) {
           toast.success("Registration successful");
           setFormData({
-            name:"",
-            email:"",
-            password:"",
-            confirmPassword:"",
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
           });
-          navigate("/")
+          navigate("/");
         } else {
-            toast.error(data.message || "Registration failed, Try again!");
+          toast.error(data.message || "Registration failed, Try again!");
         }
       } catch (error) {
-        toast.error("Network error. Please try again later")
-      } finally{
-        setLoading(false)
+        toast.error("Network error. Please try again later");
+      } finally {
+        setLoading(false);
       }
     }
   };
 
+  
+
   return (
-    <div>
-      <h2>Register</h2>
-      <form noValidate>
-        <div>
-          <label htmlFor="Name">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            className={styles.input}
-            onChange={inputHandler}
-          />
+    <>
+      <div className={styles.container}>
+        <div className={styles.logoWrapper}>
+          <img src={mainLogo} alt="logo" className={styles.logo} />
+          <img src={logo} alt="cuvette logo" className={styles.cuvetteLogo} />
         </div>
-        <div>
-          <label htmlFor="Email">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            className={styles.input}
-            onChange={inputHandler}
-          />
+        <div className={styles.btnWrapper}>
+          <Btn />
         </div>
-        <div>
-          <label htmlFor="mobile">Mobile</label>
-          <input
-            type="text"
-            name="mobile"
-            value={formData.method}
-            className={styles.input}
-            onChange={inputHandler}
-          />
+        <div className={styles.formContainer}>
+          <h2 className={styles.title}>Join us Today!</h2>
+          <form noValidate className={styles.form}>
+            <div className={styles.inputContainer}>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                className={styles.input}
+                onChange={inputHandler}
+                placeholder="Name"
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                className={styles.input}
+                onChange={inputHandler}
+                placeholder="Email id"
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                type="text"
+                name="mobile"
+                value={formData.method}
+                className={styles.input}
+                onChange={inputHandler}
+                placeholder="Mobile no"
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                className={styles.input}
+                onChange={inputHandler}
+                placeholder="Password"
+              />
+            </div>
+            <div className={styles.inputContainer}>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                className={styles.input}
+                onChange={inputHandler}
+                placeholder="Confirm Password"
+              />
+            </div>
+            <button
+              onClick={handleSubmit}
+              className={styles.btn}
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Register"}
+            </button>
+            <p className={styles.footerText}>
+              Already have an account?
+              <Link to="/" className={styles.link}>
+                Login
+              </Link>
+            </p>
+          </form>
         </div>
-        <div>
-          <label htmlFor="password">password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            className={styles.input}
-            onChange={inputHandler}
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            className={styles.input}
-            onChange={inputHandler}
-          />
-        </div>
-        <button
-          onClick={handleSubmit}
-          className={styles.btn}
-          disabled={loading}
-        >
-          {loading ? "Loading..." : "Sign up"}
-        </button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 
