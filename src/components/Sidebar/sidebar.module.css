@@ -55,3 +55,8 @@
     background-color: #f3f7fd;
     border-radius: 12px;
   }
+
+  /* RESPONSIVNESS */
+  @media(max-width: 480px) {
+    
+  }

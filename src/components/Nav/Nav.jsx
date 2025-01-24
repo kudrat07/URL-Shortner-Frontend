@@ -1,9 +1,9 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import styles from "./nav.module.css";
 import plusLogo from "../../assets/plus-icon.png";
 import search from "../../assets/search.png";
 import logo from "../../assets/star-logo.png";
-import NewLinkModal from "../LinkModal/NewLinkModal"
+import NewLinkModal from "../LinkModal/NewLinkModal";
 
 const Nav = () => {
   const currentDate = new Date();
@@ -27,29 +27,25 @@ const Nav = () => {
   const formattedDate = `${dayName}, ${monthName} ${date}`;
   return (
     <>
-      <div>
+      <div className={styles.container}>
         <nav className={styles.nav}>
           <div className={styles.navItems}>
             <div className={styles.navItemFirst}>
               <img src={logo} alt="logo" className={styles.navIcon} />
               <p className={styles.greeting}>Good morning, Kudrat</p>
             </div>
-
             <div className={styles.date}>{formattedDate}</div>
           </div>
-
           <div className={styles.navItemSecond}>
-            <button 
-            className={styles.btn}
-            onClick={() => setShowModal(!showModal)}
+            <button
+              className={styles.btn}
+              onClick={() => setShowModal(!showModal)}
             >
               <img src={plusLogo} alt="logo" className={styles.logo} />
               Create new
             </button>
-            {showModal && <NewLinkModal
-            setShowModal={setShowModal}
-            />}
-            
+            {showModal && <NewLinkModal setShowModal={setShowModal} />}
+
             <div className={styles.search}>
               <button className={styles.searchBtn}>
                 <img src={search} alt="icon" />

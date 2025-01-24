@@ -57,7 +57,7 @@
 .chartContainer {
   max-width: 540px;
   width: 50%;
-  margin: 56px auto;
+  margin: 56px auto 0px auto;
   background: white;
   padding: 24px 16px 24px 24px;
   border: 1px solid #ECECF2;
@@ -98,6 +98,31 @@
   font-weight: bold;
 }
 
+/* RESPONSIVNESS */
+@media(max-width:480px) {
+  .container{
+  }
+  .sidebar{
+    display: none;
+  }
+  .navContainer {
+    height: auto;
+  }
+  .main{
+    width: 100%;
+  }
+  .graphs{
+    flex-direction: column;
+    gap: 0;
+  }
+  .chartContainer{
+    width: 100%;
+  }
+}
+
+@media(max-width: 320px){
+
+}
 
 
 
