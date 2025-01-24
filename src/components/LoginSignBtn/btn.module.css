@@ -21,3 +21,8 @@
     font-weight: 600;
     border-radius: 8px;
   }
+  @media(max-width: 380px) {
+    .btnContainer{
+      gap: 8px;
+    }
+  }

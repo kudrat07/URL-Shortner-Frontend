@@ -23,7 +23,7 @@
   display: flex;
   justify-content: end;
   margin-right: 48px;
-  margin-top: 32px;
+  margin-top: 16px;
 }
 
 .halfContainer {
@@ -98,4 +98,29 @@
   text-decoration: none;
   font-size: 16px;
   font-weight: 600;
+}
+
+/* ADDING MOBILE RESPONSIVESNESS */
+@media (max-width: 480px) {
+  .logo{
+    display: none;
+  }
+  .halfContainer{
+    width: 100%;
+  }
+  .form{
+    padding: 0 24px;
+  }
+  .title{
+    margin-left: 24px;
+  }
+  .nav{
+    margin-top: 16px;
+  }
+}
+
+@media(max-width: 380px) {
+  .nav{
+    margin-right: 24px;
+  }
 }
