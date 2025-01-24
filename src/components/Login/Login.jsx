@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
@@ -10,6 +10,22 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Login = () => {
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //     const token = localStorage.getItem("token");
+  //     const userid = localStorage.getItem("userid")
+  //     if(token){
+  //       navigate(`/dashboard/${userid}`);
+  //     }
+  //     const fetchUser = async () => {
+  //       const response = await fetch(`${BACKEND_URL}/login`,{
+  //           method:"GET",
+  //           headers:{
+  //             "Content-type":"application/json",
+  //           }
+  //       })
+  //     }
+  // }, []);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -58,13 +74,15 @@ const Login = () => {
           body: JSON.stringify(formData),
         });
         const data = await response.json();
+        console.log(data)
         if (response.ok) {
           toast.success("Login successful! Welcome back!");
+          localStorage.setItem("token", data.token);
           setFormData({
             email: "",
             password: "",
           });
-          navigate(`dashboard`);
+          navigate(`/dashboard/:id`);
         } else {
           toast.error(data.message || "Login failed");
         }

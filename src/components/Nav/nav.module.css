@@ -82,6 +82,7 @@
   color: #923e0e;
   font-size: 1.4rem;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 /* MEDIA QUERY */

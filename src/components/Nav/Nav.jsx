@@ -4,15 +4,26 @@ import plusLogo from "../../assets/plus-icon.png";
 import search from "../../assets/search.png";
 import logo from "../../assets/star-logo.png";
 import NewLinkModal from "../LinkModal/NewLinkModal";
+import { jwtDecode } from "jwt-decode";
 
 const Nav = () => {
   const currentDate = new Date();
   const [showModal, setShowModal] = useState(false);
 
-  const username = "Kudrat Hussain";
-  const firstLetters = username
-    .split(" ")
-    .reduce((acc, word) => acc + word[0], "");
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const username = decodedToken.userName;
+
+  const getFirstTwoLetters = (str) => {
+    const words = str.trim().split(/\s+/);
+    if (words.length === 1) {
+      return words[0].slice(0, 2);
+    }
+    return words[0].charAt(0) + words[1].charAt(0);
+  };
+
+  let firstTwoLetters = getFirstTwoLetters(username);
+  firstTwoLetters = firstTwoLetters.toUpperCase();
 
   const dayName = new Intl.DateTimeFormat("en-US", { weekday: "long" })
     .format(currentDate)
@@ -32,7 +43,7 @@ const Nav = () => {
           <div className={styles.navItems}>
             <div className={styles.navItemFirst}>
               <img src={logo} alt="logo" className={styles.navIcon} />
-              <p className={styles.greeting}>Good morning, Kudrat</p>
+              <p className={styles.greeting}>Good morning, {username}</p>
             </div>
             <div className={styles.date}>{formattedDate}</div>
           </div>
@@ -57,7 +68,7 @@ const Nav = () => {
               />
             </div>
           </div>
-          <div className={styles.navItemLast}>{firstLetters}</div>
+          <div className={styles.navItemLast}>{firstTwoLetters}</div>
         </nav>
       </div>
     </>
