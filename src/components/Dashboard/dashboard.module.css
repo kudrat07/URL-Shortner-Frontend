@@ -16,6 +16,10 @@
   justify-content: center;
 }
 
+.header{
+  display: none;
+}
+
 .content {
   border: 1px solid #ececf2;
   border-bottom: none;
@@ -100,13 +104,24 @@
 
 /* RESPONSIVNESS */
 @media(max-width:480px) {
+
   .container{
+    flex-direction: column;
   }
+
+  .header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
   .sidebar{
     display: none;
+    width: 100%;
   }
   .navContainer {
     height: auto;
+    margin-bottom: 16px;
   }
   .main{
     width: 100%;
@@ -118,10 +133,6 @@
   .chartContainer{
     width: 100%;
   }
-}
-
-@media(max-width: 320px){
-
 }
 
 

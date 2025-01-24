@@ -33,6 +33,12 @@ const Dashboard = () => {
             <Nav />
           </div>
 
+          <div className={styles.header}>
+            <Sidebar />
+          </div>
+
+
+
           <div className={styles.content}>
             <div className={styles.total}>
               <p className={styles.totalClick}>Total Clicks</p>

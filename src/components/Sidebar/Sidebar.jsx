@@ -18,42 +18,44 @@ const Sidebar = () => {
             className={styles.cuvetteLogo}
           />
         </figure>
-        <div className={styles.btnWrapper}>
-          <button
-            className={`${styles.btn} 
+        <div className={styles.btnContainer}>
+          <div className={styles.btnWrapper}>
+            <button
+              className={`${styles.btn} 
            ${activeBtn === "dashboard" ? styles.primary : ""}`}
-            onClick={() => setActiveBtn("dashboard")}
-          >
-            <img src={dashboardIcon} alt="icon" />
-            <p className={styles.btnPara}>Dashboard</p>
-          </button>
+              onClick={() => setActiveBtn("dashboard")}
+            >
+              <img src={dashboardIcon} alt="icon" className={styles.sidebarIcon}/>
+              <p className={styles.btnPara}>Dashboard</p>
+            </button>
 
-          <button
-            className={`${styles.btn} 
+            <button
+              className={`${styles.btn} 
            ${activeBtn === "links" ? styles.primary : ""}`}
-            onClick={() => setActiveBtn("links")}
-          >
-            <img src={linkLogo} alt="icon" />
-            <p className={styles.btnPara}>Links</p>
-          </button>
-          <button
-            className={`${styles.btn} 
+              onClick={() => setActiveBtn("links")}
+            >
+              <img src={linkLogo} alt="icon" className={styles.sidebarIcon}/>
+              <p className={styles.btnPara}>Links</p>
+            </button>
+            <button
+              className={`${styles.btn} 
            ${activeBtn === "analytics" ? styles.primary : ""}`}
-            onClick={() => setActiveBtn("analytics")}
-          >
-            <img src={logo} alt="icon" />
-            <p className={styles.btnPara}>Analytics</p>
-          </button>
-        </div>
-        <div className={styles.setting}>
-          <button
-            className={`${styles.btnSetting} 
+              onClick={() => setActiveBtn("analytics")}
+            >
+              <img src={logo} alt="icon" className={styles.sidebarIcon}/>
+              <p className={styles.btnPara}>Analytics</p>
+            </button>
+          <div className={styles.setting}>
+            <button
+              className={`${styles.btnSetting} 
            ${activeBtn === "setting" ? styles.primary : ""}`}
-            onClick={() => setActiveBtn("setting")}
-          >
-            <img src={settingLogo} alt="icon" />
-            <p className={styles.btnPara}>Settings</p>
-          </button>
+              onClick={() => setActiveBtn("setting")}
+            >
+              <img src={settingLogo} alt="icon" className={styles.sidebarIcon}/>
+              <p className={styles.btnPara}>Settings</p>
+            </button>
+          </div>
+          </div>
         </div>
       </div>
     </div>
