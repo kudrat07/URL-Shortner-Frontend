@@ -5,9 +5,14 @@ import linkLogo from "../../assets/link-icon.png";
 import logo from "../../assets/analytics-icon.png";
 import settingLogo from "../../assets/setting-icon.png";
 import cuvetteLogo from "../../assets/cuvette-logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState("dashboard");
+  const active = (btn) => {
+    setActiveBtn(btn);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -23,38 +28,58 @@ const Sidebar = () => {
             <button
               className={`${styles.btn} 
            ${activeBtn === "dashboard" ? styles.primary : ""}`}
-              onClick={() => setActiveBtn("dashboard")}
+              onClick={() => {
+                active("dashboard");
+                navigate(`/dashboard/:id`)
+              }}
             >
-              <img src={dashboardIcon} alt="icon" className={styles.sidebarIcon}/>
+              <img
+                src={dashboardIcon}
+                alt="icon"
+                className={styles.sidebarIcon}
+              />
               <p className={styles.btnPara}>Dashboard</p>
             </button>
 
             <button
               className={`${styles.btn} 
            ${activeBtn === "links" ? styles.primary : ""}`}
-              onClick={() => setActiveBtn("links")}
+              onClick={() => {
+                active("links");
+                navigate(`/links/:id`)
+              }}
             >
-              <img src={linkLogo} alt="icon" className={styles.sidebarIcon}/>
+              <img src={linkLogo} alt="icon" className={styles.sidebarIcon} />
               <p className={styles.btnPara}>Links</p>
             </button>
             <button
               className={`${styles.btn} 
            ${activeBtn === "analytics" ? styles.primary : ""}`}
-              onClick={() => setActiveBtn("analytics")}
+              onClick={() => {
+                active("analytics");
+                navigate(`/analytics/:id`)
+              }}
             >
-              <img src={logo} alt="icon" className={styles.sidebarIcon}/>
+              <img src={logo} alt="icon" className={styles.sidebarIcon} />
               <p className={styles.btnPara}>Analytics</p>
             </button>
-          <div className={styles.setting}>
-            <button
-              className={`${styles.btnSetting} 
+            <div className={styles.setting}>
+              <button
+                className={`${styles.btnSetting} 
            ${activeBtn === "setting" ? styles.primary : ""}`}
-              onClick={() => setActiveBtn("setting")}
-            >
-              <img src={settingLogo} alt="icon" className={styles.sidebarIcon}/>
-              <p className={styles.btnPara}>Settings</p>
-            </button>
-          </div>
+                onClick={() => {
+                  active("setting");
+                  navigate(`/setting/:id`)
+                }}
+              >
+                <img
+                  src={settingLogo}
+                  alt="icon"
+                  className={styles.sidebarIcon}
+                />
+                <p className={styles.btnPara}>Settings</p>
+              </button>
+            </div>
           </div>
         </div>
       </div>

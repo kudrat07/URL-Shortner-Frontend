@@ -1,0 +1,126 @@
+.container {
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+}
+.sidebar {
+  width: 25%;
+}
+.main {
+  width: 75%;
+}
+
+.navContainer {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  display: none;
+}
+
+.content {
+  border: 1px solid #ececf2;
+  height: calc(100vh - 80px);
+  display: flex;
+}
+
+.form {
+  margin-top: 80px;
+  margin-left: 160px;
+  max-width: 440px;
+  width: 100%;
+  padding: 0 16px;
+}
+.inputWrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.label {
+  color: #181820;
+  font-size: 16px;
+  font-weight: 600;
+  width: 80px;
+}
+.input {
+  flex: 1;
+  color: #3b3c51;
+  font-size: 16px;
+  outline: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ececf2;
+  max-width: 300px;
+  width: 100%;
+  border: 1px solid #ECECF2;
+}
+.btnWrapper {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.btn, .btnDelete{
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn{
+  background-color: #1B48DA;
+}
+.btnDelete{
+  background-color: #EB0D0D;
+}
+
+
+@media (max-width: 480px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar {
+    display: none;
+    width: 100%;
+  }
+  .navContainer {
+    height: auto;
+    margin-bottom: 16px;
+  }
+  .main {
+    width: 100%;
+  }
+  .form{
+    margin-left: 0;
+    margin-top: 40px;
+  }
+  .label{
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .inputWrapper{
+    gap: 10px;
+  }
+  .btnWrapper{
+    gap: 16px;
+    margin-top: 32px;
+  }
+}

@@ -1,0 +1,97 @@
+.overlay {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  height: 240px;
+  max-width: 540px;
+  width: 100vw;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+.content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 64px;
+  height: 100%;
+  gap: 48px;
+}
+.title{
+    font-size: 20px;
+    font-weight: 500;
+    color: #000000;
+}
+.iconWrapper {
+  position: absolute;
+  right: 12px;
+  top: 16px;
+  width: 32px;
+}
+.icon {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+.btnWrapper {
+  display: flex;
+  gap: 32px;
+}
+.btnNo,
+.btnYes {
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 8px;
+  width: 220px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+.btnYes {
+  background-color: #1b48da;
+  color: #fff;
+}
+.btnNo {
+  background-color: #ececee;
+  color: #000000;
+}
+
+
+/* RESPONSIVNESS */
+@media(max-width:480px){
+    .btnYes,.btnNo{
+        width: 160px
+    }
+    .title{
+        text-align: center;
+    }
+    .container{
+        gap: 24px;
+    }
+}
+
+@media(max-width: 380px) {
+    .btnYes,.btnNo{
+        width: 120px
+    }
+    
+}
+
