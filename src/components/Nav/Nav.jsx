@@ -5,13 +5,14 @@ import search from "../../assets/search.png";
 import logo from "../../assets/star-logo.png";
 import NewLinkModal from "../LinkModal/NewLinkModal";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Nav = ({username}) => {
   const navigate = useNavigate();
   const currentDate = new Date();
   const [showModal, setShowModal] = useState(false);
+  const [logout, showLogout] = useState(false);
 
-  console.log(username)
  
 
   const token = localStorage.getItem('token')
@@ -20,6 +21,16 @@ const Nav = ({username}) => {
       navigate("/signup");
     }
   }, [token]);
+
+  const showLogoutBtn = () => {
+    showLogout(!logout)
+  }
+
+  const logoutHandler = () => {
+    toast.success("Logout")
+    localStorage.clear();
+    navigate("/");
+  }
 
 
 
@@ -77,7 +88,21 @@ const Nav = ({username}) => {
               />
             </div>
           </div>
-          <div className={styles.navItemLast}>{firstTwoLetters}</div>
+          <div 
+          className={styles.navItemLast}
+          onClick={showLogoutBtn}
+          >
+          {firstTwoLetters}
+          </div>
+          {
+            logout && (<button 
+          className={styles.logoutBtn}
+          onClick={logoutHandler}
+          >
+          Logout
+          </button>)
+          }
+          
         </nav>
       </div>
     </>

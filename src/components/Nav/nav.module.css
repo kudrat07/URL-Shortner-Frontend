@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .navItemFirst {
@@ -83,6 +84,23 @@
   font-size: 1.4rem;
   font-weight: 700;
   flex-shrink: 0;
+  cursor: pointer;
+}
+.logoutBtn{
+  position: absolute;
+  right: 60px;
+  bottom: -44px;
+  border: none;
+  color: #878BA9;
+  border: 1px solid #ECECF2;
+  background-color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 8px;
+  width: 160px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 /* MEDIA QUERY */

@@ -70,6 +70,9 @@ const Login = () => {
           toast.success("Login successful! Welcome back!");
           localStorage.setItem("token", data.token);
           localStorage.setItem("id", data.id);
+          localStorage.setItem("name",`${data.name}`);
+          localStorage.setItem("mobile", `${data.mobile}`);
+          localStorage.setItem("email", `${data.email}`);
           setFormData({
             email: "",
             password: "",
