@@ -24,7 +24,7 @@
   border: 1px solid #ececf2;
   border-bottom: none;
   border-right: none;
-  height: calc(100% - 80px);
+  height: calc(100vh - 80px);
   padding: 0 24px;
 }
 .total {

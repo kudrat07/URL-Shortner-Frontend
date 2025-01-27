@@ -90,7 +90,7 @@
     display: inline-block;
     width: 3.5rem;
     height: 1.6rem;
-    background-color: #1a5fff;
+    background-color: #b1b1b1;
     border-radius: 2rem;
     transition: all 0.3s linear;
   }
@@ -98,7 +98,7 @@
     content: " ";
     position: absolute;
     top: 50%;
-    right: 10%;
+    left: 5%;
     transform: translateY(-50%);
     width: 1.2rem;
     height: 1.2rem;
@@ -107,11 +107,12 @@
     transition: all 0.3s linear;
   }
   input[type="checkbox"]:checked + .switch:after {
-    translate: -2rem 0;
+    translate: 2rem 0;
   }
   
-  input[type="checkbox"]:checked + .switch {
-    background-color: #b1b1b1;
+  input[type="checkbox"]:checked + .switch{
+    background-color: #1a5fff;
+    
   }
   
   input[type="checkbox"] {
