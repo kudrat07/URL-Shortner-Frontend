@@ -88,10 +88,7 @@ const Register = () => {
         });
         const data = await response.json();
         if (response.ok) {
-          console.log(data)
-          console.log(data.name);
-          console.log(data.mobile);
-          console.log(data.email);
+          
           toast.success("Registration successful");
           localStorage.setItem("name",`${data.name}`);
           localStorage.setItem("mobile", `${data.mobile}`);

@@ -11,15 +11,13 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
   const navigate = useNavigate();
 
-  const id = localStorage.getItem('id')
-
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if(token) {
-      navigate(`/dashboard/${id}`)
+    const id = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate(`/dashboard/${id}`);
     }
-  }, [navigate])
-
+  }, [navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -76,7 +74,7 @@ const Login = () => {
             email: "",
             password: "",
           });
-          navigate(`/dashboard/${localStorage.getItem('id')}`);
+          navigate(`/dashboard/${localStorage.getItem("id")}`);
         } else {
           toast.error(data.message || "Login failed");
         }

@@ -5,7 +5,6 @@ import Nav from "../Nav/Nav";
 
 const Dashboard = () => {
   const username = localStorage.getItem("name")
-  console.log(username);
   const dateData = [
     { label: "21-01-25", value: 1234 },
     { label: "20-01-25", value: 2000 },
