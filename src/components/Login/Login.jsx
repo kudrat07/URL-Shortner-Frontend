@@ -11,21 +11,15 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const Login = () => {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //     const token = localStorage.getItem("token");
-  //     const userid = localStorage.getItem("userid")
-  //     if(token){
-  //       navigate(`/dashboard/${userid}`);
-  //     }
-  //     const fetchUser = async () => {
-  //       const response = await fetch(`${BACKEND_URL}/login`,{
-  //           method:"GET",
-  //           headers:{
-  //             "Content-type":"application/json",
-  //           }
-  //       })
-  //     }
-  // }, []);
+  const id = localStorage.getItem('id')
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if(token) {
+      navigate(`/dashboard/${id}`)
+    }
+  }, [navigate])
+
 
   const [formData, setFormData] = useState({
     email: "",
@@ -74,15 +68,15 @@ const Login = () => {
           body: JSON.stringify(formData),
         });
         const data = await response.json();
-        console.log(data)
         if (response.ok) {
           toast.success("Login successful! Welcome back!");
           localStorage.setItem("token", data.token);
+          localStorage.setItem("id", data.id);
           setFormData({
             email: "",
             password: "",
           });
-          navigate(`/dashboard/:id`);
+          navigate(`/dashboard/${localStorage.getItem('id')}`);
         } else {
           toast.error(data.message || "Login failed");
         }

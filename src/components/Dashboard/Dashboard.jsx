@@ -4,6 +4,8 @@ import Sidebar from "../Sidebar/Sidebar";
 import Nav from "../Nav/Nav";
 
 const Dashboard = () => {
+  const username = localStorage.getItem("name")
+  console.log(username);
   const dateData = [
     { label: "21-01-25", value: 1234 },
     { label: "20-01-25", value: 2000 },
@@ -30,7 +32,9 @@ const Dashboard = () => {
         </div>
         <div className={styles.main}>
           <div className={styles.navContainer}>
-            <Nav />
+            <Nav 
+              username={username}
+            />
           </div>
 
           <div className={styles.header}>

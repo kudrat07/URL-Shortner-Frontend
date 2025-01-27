@@ -8,6 +8,7 @@ import cuvetteLogo from "../../assets/cuvette-logo.png";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const id = localStorage.getItem("id")
   const navigate = useNavigate();
   const [activeBtn, setActiveBtn] = useState("dashboard");
   const active = (btn) => {
@@ -30,7 +31,7 @@ const Sidebar = () => {
            ${activeBtn === "dashboard" ? styles.primary : ""}`}
               onClick={() => {
                 active("dashboard");
-                navigate(`/dashboard/:id`)
+                navigate(`/dashboard/${id}`)
               }}
             >
               <img
@@ -46,7 +47,7 @@ const Sidebar = () => {
            ${activeBtn === "links" ? styles.primary : ""}`}
               onClick={() => {
                 active("links");
-                navigate(`/links/:id`)
+                navigate(`/links/${id}`)
               }}
             >
               <img src={linkLogo} alt="icon" className={styles.sidebarIcon} />
@@ -57,7 +58,7 @@ const Sidebar = () => {
            ${activeBtn === "analytics" ? styles.primary : ""}`}
               onClick={() => {
                 active("analytics");
-                navigate(`/analytics/:id`)
+                navigate(`/analytics/${id}`)
               }}
             >
               <img src={logo} alt="icon" className={styles.sidebarIcon} />
@@ -69,7 +70,7 @@ const Sidebar = () => {
            ${activeBtn === "setting" ? styles.primary : ""}`}
                 onClick={() => {
                   active("setting");
-                  navigate(`/setting/:id`)
+                  navigate(`/setting/${id}`)
                 }}
               >
                 <img

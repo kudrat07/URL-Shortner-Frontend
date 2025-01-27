@@ -4,6 +4,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Nav from "../Nav/Nav";
 
 const Analytics = () => {
+  const username = localStorage.getItem("name")
   return (
     <>
       <div className={styles.container}>
@@ -12,7 +13,9 @@ const Analytics = () => {
         </div>
         <div className={styles.main}>
           <div className={styles.navContainer}>
-            <Nav />
+            <Nav 
+              username={username}
+            />
           </div>
 
           <div className={styles.header}>

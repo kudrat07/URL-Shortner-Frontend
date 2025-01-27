@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./nav.module.css";
 import plusLogo from "../../assets/plus-icon.png";
 import search from "../../assets/search.png";
 import logo from "../../assets/star-logo.png";
 import NewLinkModal from "../LinkModal/NewLinkModal";
-import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-const Nav = () => {
+const Nav = ({username}) => {
+  const navigate = useNavigate();
   const currentDate = new Date();
   const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
-  const username = decodedToken.userName;
+  console.log(username)
+ 
+
+  const token = localStorage.getItem('token')
+  useEffect(() => {
+    if (!token) {
+      navigate("/signup");
+    }
+  }, [token]);
+
+
 
   const getFirstTwoLetters = (str) => {
     const words = str.trim().split(/\s+/);
