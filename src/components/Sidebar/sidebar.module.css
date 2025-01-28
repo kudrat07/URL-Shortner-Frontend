@@ -27,6 +27,9 @@
   font-size: 1.2rem;
   font-weight: 600;
 }
+.btnPara.color{
+  color: #3b3c51;
+}
 .setting {
   border-width: 2px 0;
   border-style: solid;

@@ -1,5 +1,7 @@
 .container {
   display: flex;
+  overflow: auto;
+  height: 100vh;
 }
 .sidebar {
   width: 25%;
@@ -31,6 +33,7 @@
   display: flex;
   align-items: center;
   margin: 60px 24px 0 24px;
+  overflow: auto;
 }
 .totalClick,
 .clicksCounts {
@@ -125,6 +128,9 @@
   }
   .main{
     width: 100%;
+  }
+  .content{
+    height: 100%;
   }
   .graphs{
     flex-direction: column;
