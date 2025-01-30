@@ -6,14 +6,15 @@ import logo from "../../assets/star-logo.png";
 import NewLinkModal from "../LinkModal/NewLinkModal";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { use } from "react";
 
-const Nav = ({username}) => {
+const Nav = ({username, newLinkModal, setNewLinkModal}) => {
   const navigate = useNavigate();
   const currentDate = new Date();
-  const [showModal, setShowModal] = useState(false);
   const [logout, showLogout] = useState(false);
 
  
+
 
   const token = localStorage.getItem('token')
   useEffect(() => {
@@ -31,7 +32,6 @@ const Nav = ({username}) => {
     localStorage.clear();
     navigate("/");
   }
-
 
 
   const getFirstTwoLetters = (str) => {
@@ -70,12 +70,15 @@ const Nav = ({username}) => {
           <div className={styles.navItemSecond}>
             <button
               className={styles.btn}
-              onClick={() => setShowModal(!showModal)}
+              onClick={() => setNewLinkModal(!newLinkModal)}
             >
               <img src={plusLogo} alt="logo" className={styles.logo} />
               Create new
             </button>
-            {showModal && <NewLinkModal setShowModal={setShowModal} />}
+            {newLinkModal && <NewLinkModal 
+            newLinkModal = {newLinkModal}
+            setNewLinkModal =  {setNewLinkModal}
+             />}
 
             <div className={styles.search}>
               <button className={styles.searchBtn}>

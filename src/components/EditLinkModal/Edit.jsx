@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import styles from "./modal.module.css";
+import React, { useEffect, useState } from "react";
+import styles from "./edit.module.css";
 import close from "../../assets/close.png";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
-  const {id}  = useParams();
+const Edit = ({ setShowEdit, linkId }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [linkData, setLinkData] = useState({
     originalUrl: "",
@@ -14,6 +12,39 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
     expiryDate: "",
   });
 
+  const getUrl = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/url/${linkId}`, {
+        method: "GET",
+      });
+      const result = await response.json();
+      if (result.expiryDate) {
+        result.expiryDate = new Date(result.expiryDate).toLocaleString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          }
+        );
+      }
+      setLinkData(result);
+      setIsChecked(result.expiryDate);
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+    } catch (error) {
+      toast.error("Something went wrong! Network error");
+    }
+  };
+
+  useEffect(() => {
+    getUrl();
+  }, []);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -25,20 +56,19 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
 
   const clearHandler = () => {
     setLinkData({
-      originalUrl:"",
-      remark:"",
-      expiryDate:""
-    })
-    toast.success("Cleard")
-  }
+      originalUrl: "",
+      remark: "",
+      expiryDate: "",
+    });
+    toast.success("Cleard");
+  };
 
   const validateError = () => {
     const newError = {};
 
     if (!linkData.originalUrl.trim()) {
       newError.originalUrl = "Destination URL is required.";
-    } 
-    
+    }
 
     if (!linkData.remark.trim()) {
       newError.remark = "Remarks cannot be empty.";
@@ -47,61 +77,67 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
     if (isChecked && !linkData.expiryDate.trim()) {
       newError.expiryDate = "Please select an expiration date.";
     }
-    if(Object.keys(newError).length > 0) {
-      toast.error(Object.values(newError)[0])
+    if (Object.keys(newError).length > 0) {
+      toast.error(Object.values(newError)[0]);
       return false;
     }
     return true;
+  };
 
-  }
-
-  const handleSubmit = async(e)=> {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(validateError()){
+    if (validateError()) {
       try {
         const response = await fetch(`${BACKEND_URL}/url/${id}`, {
-          method:"POST",
-          headers:{
+          method: "POST",
+          headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(linkData)
+          body: JSON.stringify(linkData),
         });
         const result = await response.json();
-        if(!response.ok) {
-          toast.error(result.message)
-          return
+        if (!response.ok) {
+          toast.error(result.message);
+          return;
         }
-        if(response.ok) {
+        if (response.ok) {
           toast.success("Link created");
-          setNewLinkModal(!newLinkModal)
+          setNewLinkModal(!newLinkModal);
           setLinkData({
-            originalUrl:"",
-            remark:"",
-            expiryDate:""
-          })
+            originalUrl: "",
+            remark: "",
+            expiryDate: "",
+          });
         }
-        
       } catch (error) {
         toast.error("Something went wrong while creating link");
-        
       }
     }
-  }
+  };
 
-
+  const formatDateForInput = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   return (
     <>
-      <div className={styles.overlay} onClick={() => setNewLinkModal(!newLinkModal)}></div>
+      <div className={styles.overlay} onClick={() => setShowEdit(false)}></div>
       <div className={styles.modal}>
         <div className={styles.content}>
           <nav className={styles.nav}>
-            <h3 className={styles.navTitle}>New link</h3>
+            <h3 className={styles.navTitle}>Edit Link</h3>
             <img
               src={close}
               alt="close icon"
               className={styles.close}
-              onClick={() => setNewLinkModal(!newLinkModal)}
+              onClick={() => setShowEdit(false)}
             />
           </nav>
           <div className={styles.main}>
@@ -139,6 +175,7 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
                   name="checkbox"
                   id="toggle"
                   onClick={() => setIsChecked(!isChecked)}
+                  checked={isChecked}
                 />
                 <label htmlFor="toggle" className={styles.switch}></label>
               </div>
@@ -148,7 +185,7 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
                 <input
                   name="expiryDate"
                   type="datetime-local"
-                  value={linkData.expiryDate}
+                  value={formatDateForInput(linkData.expiryDate)}
                   className={styles.input}
                   onChange={inputHandler}
                 />
@@ -157,15 +194,12 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
           </div>
           <footer className={styles.footer}>
             <div className={styles.footerContent}>
-              <h3 
-              className={styles.clear}
-              onClick={clearHandler}
-              >Clear</h3>
-              <button
-               className={styles.submitBtn}
-               onClick={handleSubmit}
-               >
-               Create new</button>
+              <h3 className={styles.clear} onClick={clearHandler}>
+                Clear
+              </h3>
+              <button className={styles.submitBtn} onClick={handleSubmit}>
+                Save
+              </button>
             </div>
           </footer>
         </div>
@@ -174,4 +208,4 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
   );
 };
 
-export default NewLinkModal;
+export default Edit;

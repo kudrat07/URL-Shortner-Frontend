@@ -1,0 +1,154 @@
+.overlay {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal {
+  position: fixed;
+  z-index: 5;
+  background-color: white;
+  max-width: 500px;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px 0 0 10px;
+}
+
+.content {
+  margin: 0 24px;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  background-color: #3b3c51;
+  margin: 0 -24px;
+  padding: 0 24px;
+  border-radius: 10px 0 0 0;
+}
+.navTitle {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+.close {
+  cursor: pointer;
+}
+.main {
+  margin-top: 24px;
+  position: relative;
+  height: 100%;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+.label,
+.expiryText {
+  color: #3b3c51;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.input,
+.textarea {
+  border: 1px solid #d1d5db;
+  padding: 8px;
+  border-radius: 6px;
+  color: #a0a0a0;
+  font-size: 1rem;
+  font-weight: 400;
+  outline: none;
+  width: 100%;
+}
+.input::placeholder {
+  color: #a0a0a0;
+}
+.textarea {
+  resize: none;
+  height: 160px;
+}
+.span {
+  color: #ff0101;
+}
+.expiration {
+  display: flex;
+  justify-content: space-between;
+}
+
+.switch {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 3.5rem;
+  height: 1.6rem;
+  background-color: #b1b1b1;
+  border-radius: 2rem;
+  transition: all 0.3s linear;
+}
+.switch::after {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: all 0.3s linear;
+}
+input[type="checkbox"]:checked + .switch:after {
+  translate: 2rem 0;
+}
+
+input[type="checkbox"]:checked + .switch {
+  background-color: #1a5fff;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+/* FOOTER */
+
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  margin: 0 -24px;
+}
+
+.footerContent {
+  height: 72px;
+  background-color: #3b3c511a;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.clear {
+  color: #3b3c51;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.submitBtn {
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1b48da;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
