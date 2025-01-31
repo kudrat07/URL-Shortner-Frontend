@@ -84,16 +84,21 @@ const Edit = ({ setShowEdit, linkId }) => {
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const updateHandler = async (e) => {
     e.preventDefault();
     if (validateError()) {
       try {
-        const response = await fetch(`${BACKEND_URL}/url/${id}`, {
-          method: "POST",
+        const requestData = { ...linkData };
+      if (!isChecked) {
+        delete requestData.expiryDate; 
+      }
+      console.log(requestData)
+        const response = await fetch(`${BACKEND_URL}/updateUrl/${linkId}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(linkData),
+          body: JSON.stringify(requestData),
         });
         const result = await response.json();
         if (!response.ok) {
@@ -101,8 +106,8 @@ const Edit = ({ setShowEdit, linkId }) => {
           return;
         }
         if (response.ok) {
-          toast.success("Link created");
-          setNewLinkModal(!newLinkModal);
+          toast.success("URL updated successfully!");
+          setShowEdit(false);
           setLinkData({
             originalUrl: "",
             remark: "",
@@ -110,7 +115,7 @@ const Edit = ({ setShowEdit, linkId }) => {
           });
         }
       } catch (error) {
-        toast.error("Something went wrong while creating link");
+        toast.error("Something went wrong while updating link");
       }
     }
   };
@@ -197,7 +202,7 @@ const Edit = ({ setShowEdit, linkId }) => {
               <h3 className={styles.clear} onClick={clearHandler}>
                 Clear
               </h3>
-              <button className={styles.submitBtn} onClick={handleSubmit}>
+              <button className={styles.submitBtn} onClick={updateHandler}>
                 Save
               </button>
             </div>

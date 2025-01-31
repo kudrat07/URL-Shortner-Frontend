@@ -22,33 +22,47 @@ const Links = () => {
   const [newLinkModal, setNewLinkModal] = useState(false);
   const [linkId, setLinkId] = useState();
   const [showEdit, setShowEdit] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const getAllLinks = async () => {
-    const response = await fetch(`${BACKEND_URL}/allUrls/${id}`, {
-      method: "GET",
-    });
-    const result = await response.json();
+  const getAllLinks = async (isFirstLoad = false) => {
+    if (isFirstLoad) setLoading(true);
+    try {
+      const response = await fetch(`${BACKEND_URL}/allUrls/${id}`, {
+        method: "GET",
+      });
+      const result = await response.json();
 
-    if (!response.ok) {
-      toast.error("Something went wrong");
-      return;
-    }
+      if (!response.ok) {
+        toast.error("Something went wrong");
+        return;
+      }
 
-    if (JSON.stringify(result.urls) !== JSON.stringify(data)) {
-      setData(result.urls);
+      if (JSON.stringify(result.urls) !== JSON.stringify(data)) {
+        setData(result.urls);
+      }
+    } catch (error) {
+      toast.error("Something went wrong while fetching data");
+    } finally {
+      if(isFirstLoad) setLoading(false);
     }
   };
 
+
   useEffect(() => {
-    getAllLinks();
+    getAllLinks()
+  }, [showModal, newLinkModal, showEdit])
+
+  useEffect(() => {
+    getAllLinks(true);
     const interval = setInterval(() => {
       getAllLinks();
-    }, 5000);
+    }, 10000);
     return () => clearInterval(interval);
-  }, [showModal, newLinkModal]);
+  }, []);
+
+ 
 
   //copy link handler
-
   const copyUrl = (value) => {
     navigator.clipboard
       .writeText(value)
@@ -95,76 +109,89 @@ const Links = () => {
           </div>
 
           <div className={styles.content}>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead className={styles.thead}>
-                  <th className={`${styles.th} ${styles.wrap}`}>
-                    Date
-                    <img src={sortIcon} alt="" />
-                  </th>
-                  <th className={styles.th}>Original Link</th>
-                  <th className={styles.th}>Short Link</th>
-                  <th className={styles.th}>Remarks</th>
-                  <th className={styles.th}>Clicks</th>
-                  <th className={`${styles.th} ${styles.wrap}`}>
-                    Status
-                    <img src={sortIcon} alt="" />
-                  </th>
-                  <th className={styles.th}>Action</th>
-                </thead>
-                <tbody className={styles.tbody}>
-                  {data.map((url) => (
-                    <tr className={styles.tr} key={url._id}>
-                      <td className={styles.td}>{url.updatedAt}</td>
-                      <td className={`${styles.td} ${styles.original}`}>
-                        <p className={styles.tdPara}>{url.originalUrl}</p>
-                      </td>
-                      <td className={`${styles.td} ${styles.tdWrap}`}>
-                        <p className={styles.tdPara}>{url.shortUrl}</p>
-                        <img
-                          onClick={() => copyUrl(url.shortUrl)}
-                          src={copyIcon}
-                          className={styles.copyIcnBtn}
-                        />
-                      </td>
+            {loading ? (
+              <div className={styles.noDataWrapper}>
+                <div className={styles.loaderContainer}>
+                  <div className={styles.spinner}></div>
+                  <h2 className={styles.noData}>Loading</h2>
+                </div>
+              </div>
+            ) : data.length > 0 ? (
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead className={styles.thead}>
+                    <th className={`${styles.th} ${styles.wrap}`}>
+                      Date
+                      <img src={sortIcon} alt="" />
+                    </th>
+                    <th className={styles.th}>Original Link</th>
+                    <th className={styles.th}>Short Link</th>
+                    <th className={styles.th}>Remarks</th>
+                    <th className={styles.th}>Clicks</th>
+                    <th className={`${styles.th} ${styles.wrap}`}>
+                      Status
+                      <img src={sortIcon} alt="" />
+                    </th>
+                    <th className={styles.th}>Action</th>
+                  </thead>
+                  <tbody className={styles.tbody}>
+                    {data.map((url) => (
+                      <tr className={styles.tr} key={url._id}>
+                        <td className={styles.td}>{url.updatedAt}</td>
+                        <td className={`${styles.td} ${styles.original}`}>
+                          <p className={styles.tdPara}>{url.originalUrl}</p>
+                        </td>
+                        <td className={`${styles.td} ${styles.tdWrap}`}>
+                          <p className={styles.tdPara}>{url.shortUrl}</p>
+                          <img
+                            onClick={() => copyUrl(url.shortUrl)}
+                            src={copyIcon}
+                            className={styles.copyIcnBtn}
+                          />
+                        </td>
 
-                      <td className={styles.td}>{url.remark}</td>
+                        <td className={styles.td}>{url.remark}</td>
 
-                      <td className={styles.td}>{url.countOfUrl}</td>
+                        <td className={styles.td}>{url.countOfUrl}</td>
 
-                      <td
-                        className={`${styles.tdStatus} ${
-                          url.status === "Active" ? "" : styles.inactive
-                        }`}
-                      >
-                        {url.status}
-                      </td>
+                        <td
+                          className={`${styles.tdStatus} ${
+                            url.status === "Active" ? "" : styles.inactive
+                          }`}
+                        >
+                          {url.status}
+                        </td>
 
-                      <td className={`${styles.td} ${styles.iconWrap}`}>
-                        <img
-                          src={editIcon}
-                          className={styles.iconBtn}
-                          onClick={() => editLinkHandler(url._id)}
-                        />
-                        <img
-                          src={delIcon}
-                          className={styles.iconBtn}
-                          onClick={() => deleteLinkHandler(url._id)}
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                        <td className={`${styles.td} ${styles.iconWrap}`}>
+                          <img
+                            src={editIcon}
+                            className={styles.iconBtn}
+                            onClick={() => editLinkHandler(url._id)}
+                          />
+                          <img
+                            src={delIcon}
+                            className={styles.iconBtn}
+                            onClick={() => deleteLinkHandler(url._id)}
+                          />
+                        </td>
+                      </tr>
+                    ))}
 
-                  {showEdit && (
-                    <Edit setShowEdit={setShowEdit} linkId={linkId} />
-                  )}
+                    {showEdit && (
+                      <Edit setShowEdit={setShowEdit} linkId={linkId} />
+                    )}
 
-                  {showModal && (
-                    <Modal setShowModal={setShowModal} linkId={linkId} />
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    {showModal && (
+                      <Modal setShowModal={setShowModal} linkId={linkId} />
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className={styles.noDataWrapper}>
+                <h2 className={styles.noData}>No data available</h2>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -4,35 +4,53 @@ import plusLogo from "../../assets/plus-icon.png";
 import search from "../../assets/search.png";
 import logo from "../../assets/star-logo.png";
 import NewLinkModal from "../LinkModal/NewLinkModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { use } from "react";
 
-const Nav = ({username, newLinkModal, setNewLinkModal}) => {
+const Nav = ({ username, newLinkModal, setNewLinkModal }) => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const currentDate = new Date();
   const [logout, showLogout] = useState(false);
+  const [remark, setRemark] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const token = localStorage.getItem("token");
 
- 
 
-
-  const token = localStorage.getItem('token')
   useEffect(() => {
+    const hour = currentDate.getHours();
+    if (hour >= 5 && hour < 12) {
+      setGreeting("Good Morning");
+    } else if (hour >= 12 && hour < 17) {
+      setGreeting("Good Afternoon");
+    } else if (hour >= 17 && hour < 21) {
+      setGreeting("Good Evening");
+    } else {
+      setGreeting("Good Night");
+    }
+
     if (!token) {
       navigate("/signup");
     }
   }, [token]);
 
   const showLogoutBtn = () => {
-    showLogout(!logout)
-  }
+    showLogout(!logout);
+  };
 
   const logoutHandler = () => {
-    toast.success("Logout")
+    toast.success("Logout");
     localStorage.clear();
     navigate("/");
-  }
+  };
 
+  const navigateToLinkHandler = () => {
+    if (!remark.trim()) {
+      toast.error("Please enter remark");
+      return;
+    }
+    navigate(`/links/${id}`);
+  };
 
   const getFirstTwoLetters = (str) => {
     const words = str.trim().split(/\s+/);
@@ -63,7 +81,7 @@ const Nav = ({username, newLinkModal, setNewLinkModal}) => {
           <div className={styles.navItems}>
             <div className={styles.navItemFirst}>
               <img src={logo} alt="logo" className={styles.navIcon} />
-              <p className={styles.greeting}>Good morning, {username}</p>
+              <p className={styles.greeting}>{`${greeting},${username}`}</p>
             </div>
             <div className={styles.date}>{formattedDate}</div>
           </div>
@@ -75,37 +93,37 @@ const Nav = ({username, newLinkModal, setNewLinkModal}) => {
               <img src={plusLogo} alt="logo" className={styles.logo} />
               Create new
             </button>
-            {newLinkModal && <NewLinkModal 
-            newLinkModal = {newLinkModal}
-            setNewLinkModal =  {setNewLinkModal}
-             />}
+            {newLinkModal && (
+              <NewLinkModal
+                newLinkModal={newLinkModal}
+                setNewLinkModal={setNewLinkModal}
+              />
+            )}
 
             <div className={styles.search}>
-              <button className={styles.searchBtn}>
+              <button
+                className={styles.searchBtn}
+                onClick={navigateToLinkHandler}
+              >
                 <img src={search} alt="icon" />
               </button>
               <input
                 type="text"
+                value={remark}
+                onChange={(event) => setRemark(event.target.value)}
                 className={styles.input}
                 placeholder="Search by remarks"
               />
             </div>
           </div>
-          <div 
-          className={styles.navItemLast}
-          onClick={showLogoutBtn}
-          >
-          {firstTwoLetters}
+          <div className={styles.navItemLast} onClick={showLogoutBtn}>
+            {firstTwoLetters}
           </div>
-          {
-            logout && (<button 
-          className={styles.logoutBtn}
-          onClick={logoutHandler}
-          >
-          Logout
-          </button>)
-          }
-          
+          {logout && (
+            <button className={styles.logoutBtn} onClick={logoutHandler}>
+              Logout
+            </button>
+          )}
         </nav>
       </div>
     </>

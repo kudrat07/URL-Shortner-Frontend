@@ -13,8 +13,10 @@ const Analytics = () => {
   const username = localStorage.getItem("name");
   const [data, setData] = useState([]);
   const [newLinkModal, setNewLinkModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getDetails = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${BACKEND_URL}/allUrls/${id}`, {
         method: "GET",
@@ -28,6 +30,8 @@ const Analytics = () => {
       setData(result.urls);
     } catch (error) {
       toast.error("Something went wrong while fetching data");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,37 +59,50 @@ const Analytics = () => {
           </div>
 
           <div className={styles.content}>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead className={styles.thead}>
-                  <th className={`${styles.th} ${styles.wrap}`}>
-                    Timestamp
-                    <img src={sortIcon} alt="" />
-                  </th>
-                  <th className={styles.th}>Original Link</th>
-                  <th className={styles.th}>Short Link</th>
-                  <th className={styles.th}>ip address</th>
-                  <th className={styles.th}>User Device</th>
-                </thead>
-                <tbody className={styles.tbody}>
-                  {data.map((item) => (
-                    <tr className={styles.tr} key={item._id}>
-                      <td className={styles.td}>{item.updatedAt}</td>
-                      <td className={styles.td}>
-                        <p className={styles.tdPara}>{item.originalUrl}</p>
-                      </td>
-                      <td className={`${styles.td} ${styles.wrap}`}>
-                        <p className={styles.tdPara}>{item.shortUrl}</p>
-                      </td>
+            {loading ? (
+              <div className={styles.noDataWrapper}>
+                <div className={styles.loaderContainer}>
+                  <div className={styles.spinner}></div>
+                  <h2 className={styles.noData}>Loading</h2>
+                </div>
+              </div>
+            ) : data.length > 0 ? (
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead className={styles.thead}>
+                    <th className={`${styles.th} ${styles.wrap}`}>
+                      Timestamp
+                      <img src={sortIcon} alt="" />
+                    </th>
+                    <th className={styles.th}>Original Link</th>
+                    <th className={styles.th}>Short Link</th>
+                    <th className={styles.th}>ip address</th>
+                    <th className={styles.th}>User Device</th>
+                  </thead>
+                  <tbody className={styles.tbody}>
+                    {data.map((item) => (
+                      <tr className={styles.tr} key={item._id}>
+                        <td className={styles.td}>{item.updatedAt}</td>
+                        <td className={styles.td}>
+                          <p className={styles.tdPara}>{item.originalUrl}</p>
+                        </td>
+                        <td className={`${styles.td} ${styles.wrap}`}>
+                          <p className={styles.tdPara}>{item.shortUrl}</p>
+                        </td>
 
-                      <td className={styles.td}>{item.ipAddress}</td>
+                        <td className={styles.td}>{item.ipAddress}</td>
 
-                      <td className={styles.td}>{item.os}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        <td className={styles.td}>{item.os}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className={styles.noDataWrapper}>
+                <h2 className={styles.noData}>No data available</h2>
+              </div>
+            )}
           </div>
         </div>
       </div>

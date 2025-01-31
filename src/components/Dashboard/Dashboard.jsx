@@ -1,29 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 import Nav from "../Nav/Nav";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Dashboard = () => {
+  const { id } = useParams();
   const username = localStorage.getItem("name");
   const [newLinkModal, setNewLinkModal] = useState(false);
+  const [info, setInfo] = useState([]);
+  const [totalCounts, setTotalCounts] = useState();
+  const [deviceClicks, setDeviceClicks] = useState([]);
+  const [dateClicks, setDateClicks] = useState([]);
 
-  const dateData = [
-    { label: "21-01-25", value: 3000 },
-    { label: "20-01-25", value: 2000 },
-    { label: "19-01-25", value: 1500 },
-    { label: "18-01-25", value: 34 },
-  ];
+  const getStats = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/count/${id}`, {
+        method: "GET",
+      });
 
-  const data = [
-    { label: "Mobile", value: 1234 },
-    { label: "Desktop", value: 2000 },
-    { label: "Tablet", value: 1500 },
-    { label: "Others", value: 34 },
-  ];
+      const result = await response.json();
 
-  const maxClicks = Math.max(...data.map((item) => item.value));
+      if (!response.ok) {
+        toast.error("Something went wrong while fetching data");
+        return;
+      }
 
-  const maxValue = Math.max(...data.map((item) => item.value));
+      if (Object.keys(result).length === 0) {
+        setTotalCounts(0);
+        setDeviceClicks([]);
+        setDateClicks([]);
+        return;
+      }
+
+      setInfo(result);
+      setTotalCounts(result.totalCounts);
+      setDeviceClicks(result.deviceCounts)
+      setDateClicks(result.dateWiseClicks);
+    } catch (error) {
+      toast.error("Something went wrong while fetching data");
+    }
+  };
+
+  useEffect(() => {
+    getStats();
+  }, []);
+
+  console.log(info.length);
+
+
+  const maxClicksDateWise = Math.max(
+    ...dateClicks.map((item) => item.cumulativeClicks)
+  );
+
+
+  const maxDeviceClicks = Math.max(...deviceClicks.map((item) => item.count))
+
 
   return (
     <>
@@ -47,24 +82,28 @@ const Dashboard = () => {
           <div className={styles.content}>
             <div className={styles.total}>
               <p className={styles.totalClick}>Total Clicks</p>
-              <span className={styles.clicksCounts}>1234</span>
+              <span className={styles.clicksCounts}>{totalCounts}</span>
             </div>
             <div className={styles.graphs}>
               <div className={styles.chartContainer}>
                 <h4 className={styles.title}>Date-wise Clicks</h4>
 
-                {dateData.map((item, index) => (
+                {dateClicks.map((item, index) => (
                   <div className={styles.bar} key={index}>
-                    <span className={styles.label}>{item.label}</span>
+                    <span className={styles.label}>{item.date}</span>
                     <div className={styles.barContainer}>
                       <div
                         className={styles.barFill}
                         style={{
-                          width: `${(item.value / maxValue) * 100}%`,
+                          width: `${
+                            (item.cumulativesClicks / maxClicksDateWise) * 100
+                          }%`,
                         }}
                       ></div>
                     </div>
-                    <span className={styles.value}>{item.value}</span>
+                    <span className={styles.value}>
+                      {item.cumulativeClicks}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -72,18 +111,18 @@ const Dashboard = () => {
               <div className={styles.chartContainer}>
                 <h4 className={styles.title}>Click Devices</h4>
 
-                {data.map((item, index) => (
+                {deviceClicks.map((item, index) => (
                   <div className={styles.bar} key={index}>
-                    <span className={styles.label}>{item.label}</span>
+                    <span className={styles.label}>{item.name}</span>
                     <div className={styles.barContainer}>
                       <div
                         className={styles.barFill}
                         style={{
-                          width: `${(item.value / maxValue) * 100}%`,
+                          width: `${(item.count / maxDeviceClicks) * 100}%`,
                         }}
                       ></div>
                     </div>
-                    <span className={styles.value}>{item.value}</span>
+                    <span className={styles.value}>{item.count}</span>
                   </div>
                 ))}
               </div>
