@@ -36,7 +36,6 @@ const Links = () => {
 
     if (JSON.stringify(result.urls) !== JSON.stringify(data)) {
       setData(result.urls);
-    } else {
     }
   };
 
@@ -75,7 +74,6 @@ const Links = () => {
     setShowEdit(!showEdit);
     setLinkId(id);
   };
-
 
   return (
     <>

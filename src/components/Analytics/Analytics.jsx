@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./analytics.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 import Nav from "../Nav/Nav";
 import sortIcon from "../../assets/sort-icon.png";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Analytics = () => {
+  const { id } = useParams();
   const username = localStorage.getItem("name");
+  const [data, setData] = useState([]);
+  const [newLinkModal, setNewLinkModal] = useState(false);
+
+  const getDetails = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/allUrls/${id}`, {
+        method: "GET",
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+      setData(result.urls);
+    } catch (error) {
+      toast.error("Something went wrong while fetching data");
+    }
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, []);
+
   return (
     <>
       <div className={styles.container}>
@@ -14,7 +43,11 @@ const Analytics = () => {
         </div>
         <div className={styles.main}>
           <div className={styles.navContainer}>
-            <Nav username={username} />
+            <Nav
+              username={username}
+              setNewLinkModal={setNewLinkModal}
+              newLinkModal={newLinkModal}
+            />
           </div>
 
           <div className={styles.header}>
@@ -35,74 +68,21 @@ const Analytics = () => {
                   <th className={styles.th}>User Device</th>
                 </thead>
                 <tbody className={styles.tbody}>
-                 
-                  
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
+                  {data.map((item) => (
+                    <tr className={styles.tr} key={item._id}>
+                      <td className={styles.td}>{item.updatedAt}</td>
+                      <td className={styles.td}>
+                        <p className={styles.tdPara}>{item.originalUrl}</p>
+                      </td>
+                      <td className={`${styles.td} ${styles.wrap}`}>
+                        <p className={styles.tdPara}>{item.shortUrl}</p>
+                      </td>
 
-                    <td className={styles.td}>192.158.1.38</td>
+                      <td className={styles.td}>{item.ipAddress}</td>
 
-                    <td className={styles.td}>Android</td>
-                  </tr>
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
-
-                    <td className={styles.td}>192.158.1.38</td>
-
-                    <td className={styles.td}>Android</td>
-                  </tr>
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
-
-                    <td className={styles.td}>192.158.1.38</td>
-
-                    <td className={styles.td}>Android</td>
-                  </tr>
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
-
-                    <td className={styles.td}>192.158.1.38</td>
-
-                    <td className={styles.td}>Android</td>
-                  </tr>
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
-
-                    <td className={styles.td}>192.158.1.38</td>
-
-                    <td className={styles.td}>Android</td>
-                  </tr>
-                  <tr className={styles.tr}>
-                    <td className={styles.td}>Jan 14, 2025 16:30</td>
-                    <td className={styles.td}>https://www.google.com</td>
-                    <td className={`${styles.td} ${styles.wrap}`}>
-                      https://www.google.com
-                    </td>
-
-                    <td className={styles.td}>192.158.1.38</td>
-
-                    <td className={styles.td}>Android</td>
-                  </tr>
+                      <td className={styles.td}>{item.os}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

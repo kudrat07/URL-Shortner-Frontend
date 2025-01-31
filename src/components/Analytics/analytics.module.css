@@ -66,6 +66,10 @@ body{
   font-weight: 500;
   border: 0.5px solid #f8f8f8;
   border-left: none;
+  overflow: hidden;
+}
+.tdPara{
+  width: 150px;
 }
 .wrap {
   display: flex;

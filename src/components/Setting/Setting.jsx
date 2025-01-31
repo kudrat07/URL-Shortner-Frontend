@@ -9,18 +9,18 @@ import { useParams } from "react-router-dom";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Setting = () => {
-
-  const {id} = useParams();
+  const { id } = useParams();
   const [deleteModal, showDeleteModal] = useState(false);
+  const [newLinkModal, setNewLinkModal] = useState(false);
   const [update, setUpdate] = useState({
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
     mobile: localStorage.getItem("mobile"),
   });
-  const[username, setUsername] = useState(localStorage.getItem("name"))
+  const [username, setUsername] = useState(localStorage.getItem("name"));
 
   useEffect(() => {
-      console.log("update");
+    console.log("update");
   }, [deleteModal]);
 
   const inputHandler = (e) => {
@@ -56,7 +56,6 @@ const Setting = () => {
     return true;
   };
 
-
   const updateAccountHandler = async (e) => {
     e.preventDefault();
     if (validation()) {
@@ -66,7 +65,7 @@ const Setting = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(update ),
+          body: JSON.stringify(update),
         });
         const result = await response.json();
         if (!response.ok) {
@@ -85,7 +84,6 @@ const Setting = () => {
     }
   };
 
-
   const deleteAccountHandler = (e) => {
     e.preventDefault();
     showDeleteModal(!deleteModal);
@@ -99,8 +97,10 @@ const Setting = () => {
         </div>
         <div className={styles.main}>
           <div className={styles.navContainer}>
-            <Nav 
+            <Nav
               username={username}
+              setNewLinkModal={setNewLinkModal}
+              newLinkModal={newLinkModal}
             />
           </div>
 
