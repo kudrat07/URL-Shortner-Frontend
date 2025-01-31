@@ -36,6 +36,13 @@ const Dashboard = () => {
         return;
       }
 
+      const sortedDateClicks = result.dateWiseClicks.sort((a, b) => {
+        const dateA = new Date(a.date.split("-").reverse().join("-")); // Convert dd-mm-yyyy to yyyy-mm-dd
+        const dateB = new Date(b.date.split("-").reverse().join("-"));
+        return dateB - dateA; // Descending order (today's date first)
+      });
+  
+
       setInfo(result);
       setTotalCounts(result.totalCounts);
       setDeviceClicks(result.deviceCounts)
@@ -56,8 +63,12 @@ const Dashboard = () => {
     ...dateClicks.map((item) => item.cumulativeClicks)
   );
 
+  console.log(maxClicksDateWise)
+  console.log(dateClicks)
+
 
   const maxDeviceClicks = Math.max(...deviceClicks.map((item) => item.count))
+
 
 
   return (

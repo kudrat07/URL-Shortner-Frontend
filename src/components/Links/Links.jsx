@@ -11,6 +11,7 @@ import toastIcon from "../../assets/toast-icon.png";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import Edit from "../EditLinkModal/Edit";
+import Pagination from "../Pagination/Pagination";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,6 +24,11 @@ const Links = () => {
   const [linkId, setLinkId] = useState();
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(6);
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
 
   const getAllLinks = async (isFirstLoad = false) => {
     if (isFirstLoad) setLoading(true);
@@ -43,14 +49,13 @@ const Links = () => {
     } catch (error) {
       toast.error("Something went wrong while fetching data");
     } finally {
-      if(isFirstLoad) setLoading(false);
+      if (isFirstLoad) setLoading(false);
     }
   };
 
-
   useEffect(() => {
-    getAllLinks()
-  }, [showModal, newLinkModal, showEdit])
+    getAllLinks();
+  }, [showModal, newLinkModal, showEdit]);
 
   useEffect(() => {
     getAllLinks(true);
@@ -59,8 +64,6 @@ const Links = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
-
- 
 
   //copy link handler
   const copyUrl = (value) => {
@@ -88,6 +91,10 @@ const Links = () => {
     setShowEdit(!showEdit);
     setLinkId(id);
   };
+
+  const newData = data.slice(firstPostIndex, lastPostIndex);
+
+  console.log(newData);
 
   return (
     <>
@@ -135,7 +142,7 @@ const Links = () => {
                     <th className={styles.th}>Action</th>
                   </thead>
                   <tbody className={styles.tbody}>
-                    {data.map((url) => (
+                    {newData.map((url) => (
                       <tr className={styles.tr} key={url._id}>
                         <td className={styles.td}>{url.updatedAt}</td>
                         <td className={`${styles.td} ${styles.original}`}>
@@ -192,6 +199,13 @@ const Links = () => {
                 <h2 className={styles.noData}>No data available</h2>
               </div>
             )}
+          <footer className={styles.footer}>
+            <Pagination
+              totalPage={data.length}
+              postPerPage={postPerPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </footer>
           </div>
         </div>
       </div>

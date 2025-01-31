@@ -28,12 +28,20 @@ body{
   border: 1px solid #ececf2;
   width: 100%;
   height: calc(100vh - 80px);
+  position: relative;
+}
+
+.footer{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 32px;
 }
 
 .tableContainer {
   overflow: auto;
   width: 100%;
-  padding: 32px;
+  padding: 40px 32px;
   display: block;
   white-space: nowrap;
   width: 100%;
@@ -44,8 +52,9 @@ body{
   width: 100%;
   height: auto;
   border-collapse: collapse;
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0px 4px 4px 0px #0000000A;
+  overflow: hidden;
 }
  .th {
   background-color: #f3f7fd;
@@ -60,7 +69,7 @@ body{
 }
 .td {
   text-align: center;
-  padding: 14px 8px 14px 20px;
+  padding: 10px 8px 8px 20px;
   font-size: 14px;
   color: #3b3c51;
   font-weight: 500;

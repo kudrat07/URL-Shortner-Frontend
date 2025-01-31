@@ -5,6 +5,7 @@ import Nav from "../Nav/Nav";
 import sortIcon from "../../assets/sort-icon.png";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import Pagination from "../Pagination/Pagination";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,6 +15,11 @@ const Analytics = () => {
   const [data, setData] = useState([]);
   const [newLinkModal, setNewLinkModal] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(6);
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
 
   const getDetails = async () => {
     setLoading(true);
@@ -38,6 +44,9 @@ const Analytics = () => {
   useEffect(() => {
     getDetails();
   }, []);
+
+  const newData = data.slice(firstPostIndex, lastPostIndex);
+
 
   return (
     <>
@@ -80,7 +89,7 @@ const Analytics = () => {
                     <th className={styles.th}>User Device</th>
                   </thead>
                   <tbody className={styles.tbody}>
-                    {data.map((item) => (
+                    {newData.map((item) => (
                       <tr className={styles.tr} key={item._id}>
                         <td className={styles.td}>{item.updatedAt}</td>
                         <td className={styles.td}>
@@ -103,6 +112,13 @@ const Analytics = () => {
                 <h2 className={styles.noData}>No data available</h2>
               </div>
             )}
+            <footer className={styles.footer}>
+              <Pagination
+                totalPage={data.length}
+                postPerPage={postPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </footer>
           </div>
         </div>
       </div>
