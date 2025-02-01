@@ -11,6 +11,9 @@ import SettingPage from "./pages/SettingPage/SettingPage";
 import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoute";
 
 const App = () => {
+
+  
+
   return (
     <>
       <BrowserRouter>

@@ -46,25 +46,8 @@ const Links = () => {
         return;
       }
 
-      // Check if the fetched data is different from current data, only update if different
       if (JSON.stringify(result.urls) !== JSON.stringify(data)) {
-        let sortedData = result.urls;
-
-        // Apply sorting by date if needed
-        if (sortOrder === "asc") {
-          sortedData = sortedData.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
-        } else {
-          sortedData = sortedData.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        }
-
-        // Apply sorting by status if needed
-        if (statusSortOrder === "inactiveFirst") {
-          sortedData = sortedData.sort((a, b) => (a.status === "Inactive" ? -1 : 1) - (b.status === "Inactive" ? -1 : 1));
-        } else {
-          sortedData = sortedData.sort((a, b) => (a.status === "Active" ? -1 : 1) - (b.status === "Active" ? -1 : 1));
-        }
-
-        setData(sortedData);
+        setData(result.urls);
       }
     } catch (error) {
       toast.error("Something went wrong while fetching data");
@@ -73,12 +56,10 @@ const Links = () => {
     }
   };
 
-  // UseEffect hook for fetching data initially and on changes
   useEffect(() => {
     getAllLinks();
   }, [showModal, newLinkModal, showEdit]);
 
-  // UseEffect hook for periodic updates with interval
   useEffect(() => {
     getAllLinks(true);
     const interval = setInterval(() => {
@@ -86,6 +67,34 @@ const Links = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  // Copy link handler
+  const copyUrl = (value) => {
+    navigator.clipboard
+      .writeText(value)
+      .then(() => {
+        toast.success("Link Copied", {
+          icon: <img src={toastIcon} />,
+          position: "bottom-left",
+          className: styles.customToast,
+        });
+      })
+      .catch(() => {
+        toast.error("Error in copying link");
+      });
+  };
+
+  // Delete link handler
+  const deleteLinkHandler = (id) => {
+    setShowModal(!showModal);
+    setLinkId(id);
+  };
+
+  // Edit link handler
+  const editLinkHandler = (id) => {
+    setShowEdit(!showEdit);
+    setLinkId(id);
+  };
 
   // Sort by Date
   const sortByDate = () => {
@@ -238,13 +247,13 @@ const Links = () => {
               </div>
             )}
           </div>
-          <footer className={styles.footer}>
-            <Pagination
-              totalPage={data.length}
-              postPerPage={postPerPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </footer>
+            <footer className={styles.footer}>
+              <Pagination
+                totalPage={data.length}
+                postPerPage={postPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </footer>
         </div>
       </div>
     </>
