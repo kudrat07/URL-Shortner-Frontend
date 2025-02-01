@@ -64,7 +64,7 @@ const Links = () => {
     getAllLinks(true);
     const interval = setInterval(() => {
       getAllLinks();
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
