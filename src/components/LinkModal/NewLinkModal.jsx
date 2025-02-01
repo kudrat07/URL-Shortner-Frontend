@@ -8,6 +8,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
   const {id}  = useParams();
   const [isChecked, setIsChecked] = useState(false);
+  const[loading, setLoading] = useState(false)
   const [linkData, setLinkData] = useState({
     originalUrl: "",
     remark: "",
@@ -60,8 +61,8 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
   
     if (validateError()) {
       try {
+        setLoading(true);
         let expiryDateGMT = null;
-  
         // Convert expiry date to GMT format if provided
         if (linkData.expiryDate) {
           const localDate = new Date(linkData.expiryDate);
@@ -99,6 +100,8 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
         }
       } catch (error) {
         toast.error("Something went wrong while creating the link");
+      } finally{
+        setLoading(true)
       }
     }
   };
@@ -178,10 +181,12 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
               onClick={clearHandler}
               >Clear</h3>
               <button
-               className={styles.submitBtn}
+               className={`${styles.submitBtn} ${loading ? styles.btnDisabled : ""}`}
                onClick={handleSubmit}
+               disabled={loading}
                >
-               Create new</button>
+               {loading ? "Creating..." :"Create new"}
+            </button>
             </div>
           </footer>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../DeleteModal/delete.module.css";
 import icon from "../../assets/close-modal.png";
 import toast from "react-hot-toast";
@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Delete = ({ showDeleteModal, deleteModal }) => {
+  const[loading, setLoading] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {}, [deleteModal]);
   const deleteUserHandler = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(
         `${BACKEND_URL}/delete/${localStorage.getItem("id")}`,
         {
@@ -30,11 +32,16 @@ const Delete = ({ showDeleteModal, deleteModal }) => {
       }
     } catch (error) {
       toast.error("Something went wrong")
+    } finally{
+      setLoading(false)
     }
   };
   return (
     <>
-      <div className={styles.overlay}></div>
+      <div 
+      className={styles.overlay}
+      onClick={() => showDeleteModal(!deleteModal)}
+      ></div>
       <div className={styles.modal}>
         <div className={styles.content}>
           <figure className={styles.iconWrapper}>
@@ -57,8 +64,9 @@ const Delete = ({ showDeleteModal, deleteModal }) => {
               >
                 NO
               </button>
-              <button onClick={deleteUserHandler} className={styles.btnYes}>
-                YES
+              <button onClick={deleteUserHandler}
+               className={`${styles.btnYes} ${loading ? styles.btnDisabled : ""}`}>
+                {loading ? "Deleting..." : "Yes"}
               </button>
             </div>
           </div>

@@ -6,6 +6,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Edit = ({ setShowEdit, linkId }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [linkData, setLinkData] = useState({
     originalUrl: "",
     remark: "",
@@ -90,6 +91,7 @@ const Edit = ({ setShowEdit, linkId }) => {
     e.preventDefault();
     if (validateError()) {
       try {
+        setLoading(true);
         const requestData = { ...linkData };
   
         // Ensure expiryDate is in GMT if set
@@ -125,7 +127,7 @@ const Edit = ({ setShowEdit, linkId }) => {
         });
       } catch (error) {
         toast.error("Something went wrong while updating link");
-      }
+      } setLoading(false)
     }
   };
   
@@ -212,8 +214,8 @@ const Edit = ({ setShowEdit, linkId }) => {
               <h3 className={styles.clear} onClick={clearHandler}>
                 Clear
               </h3>
-              <button className={styles.submitBtn} onClick={updateHandler}>
-                Save
+              <button className={`${styles.submitBtn} ${loading ? styles.btnDisabled : ""}`} onClick={updateHandler}>
+                {loading ? "Saving" : "Save"}
               </button>
             </div>
           </footer>

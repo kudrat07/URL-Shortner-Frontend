@@ -33,10 +33,10 @@
   height: 100%;
   gap: 48px;
 }
-.title{
-    font-size: 20px;
-    font-weight: 500;
-    color: #000000;
+.title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000000;
 }
 .iconWrapper {
   position: absolute;
@@ -60,7 +60,8 @@
   font-size: 18px;
   font-weight: 600;
   padding: 8px;
-  width: 220px;
+  max-width: 180px;
+  width: 38vw;
   border-radius: 6px;
   text-align: center;
   cursor: pointer;
@@ -73,25 +74,23 @@
   background-color: #ececee;
   color: #000000;
 }
-
+.btnDisabled {
+  cursor: not-allowed;
+}
 
 /* RESPONSIVNESS */
-@media(max-width:480px){
-    .btnYes,.btnNo{
-        width: 160px
-    }
-    .title{
-        text-align: center;
-    }
-    .container{
-        gap: 24px;
-    }
-}
+@media(max-width: 520px){
+  .modal{
+      width: 90vw;
+  }
+  .title{
+      text-align: center;
+  }
 
-@media(max-width: 380px) {
-    .btnYes,.btnNo{
-        width: 120px
-    }
-    
 }
-
+@media(max-width: 360px) {
+  .title{
+      font-size: 1rem;
+      font-weight: 600;
+  }
+}

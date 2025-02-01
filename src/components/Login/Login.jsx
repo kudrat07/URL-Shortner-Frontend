@@ -130,7 +130,7 @@ const Login = () => {
 
                 <button
                   onClick={handleSubmit}
-                  className={styles.btn}
+                  className={`${styles.btn} ${loading? styles.btnDisabled : ""}`}
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "Login"}

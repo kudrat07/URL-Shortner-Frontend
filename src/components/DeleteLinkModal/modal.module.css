@@ -66,12 +66,17 @@
     width: 38vw;
     padding: 6px;
     cursor: pointer;
-
+}
+.btnDisabled{
+    cursor: not-allowed;
 }
 
 @media(max-width: 520px){
     .modal{
         width: 90vw;
+    }
+    .title{
+        text-align: center;
     }
 
 }

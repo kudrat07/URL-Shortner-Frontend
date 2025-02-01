@@ -152,3 +152,7 @@ input[type="checkbox"] {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.btnDisabled{
+  cursor: not-allowed;
+}

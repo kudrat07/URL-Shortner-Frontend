@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./modal.module.css";
 import closeIcon from "../../assets/close-modal.png";
 import toast from "react-hot-toast";
@@ -6,8 +6,10 @@ import toast from "react-hot-toast";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Modal = ({ setShowModal, linkId }) => {
+  const[loading, setLoading] = useState(false)
   const deleteLink = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${BACKEND_URL}/delete/url/${linkId}`, {
         method: "DELETE",
         headers: {
@@ -25,6 +27,8 @@ const Modal = ({ setShowModal, linkId }) => {
       }
     } catch (error) {
       toast.error("Something went wrong! Newtwork error")
+    } finally{
+      setLoading(false)
     }
   };
 
@@ -48,11 +52,12 @@ const Modal = ({ setShowModal, linkId }) => {
               <button
                 className={styles.btnNo}
                 onClick={() => setShowModal(false)}
+                disabled={loading}
               >
                 No
               </button>
-              <button className={styles.btnYes} onClick={deleteLink}>
-                Yes
+              <button className={`${styles.btnYes} ${loading ? styles.btnDisabled : ""}`} onClick={deleteLink}>
+                {loading ? "Deleting..." : "Yes"}
               </button>
             </div>
           </div>
