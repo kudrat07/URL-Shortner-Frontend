@@ -12,7 +12,7 @@ const Dashboard = () => {
   const username = localStorage.getItem("name");
   const [newLinkModal, setNewLinkModal] = useState(false);
   const [info, setInfo] = useState([]);
-  const [totalCounts, setTotalCounts] = useState();
+  const [totalCounts, setTotalCounts] = useState(0);
   const [deviceClicks, setDeviceClicks] = useState([]);
   const [dateClicks, setDateClicks] = useState([]);
 
@@ -37,16 +37,15 @@ const Dashboard = () => {
       }
 
       const sortedDateClicks = result.dateWiseClicks.sort((a, b) => {
-        const dateA = new Date(a.date.split("-").reverse().join("-")); // Convert dd-mm-yyyy to yyyy-mm-dd
+        const dateA = new Date(a.date.split("-").reverse().join("-"));
         const dateB = new Date(b.date.split("-").reverse().join("-"));
-        return dateB - dateA; // Descending order (today's date first)
+        return dateB - dateA;
       });
-  
 
       setInfo(result);
       setTotalCounts(result.totalCounts);
-      setDeviceClicks(result.deviceCounts)
-      setDateClicks(result.dateWiseClicks);
+      setDeviceClicks(result.deviceCounts);
+      setDateClicks(sortedDateClicks);
     } catch (error) {
       toast.error("Something went wrong while fetching data");
     }
@@ -56,20 +55,8 @@ const Dashboard = () => {
     getStats();
   }, []);
 
-  console.log(info.length);
-
-
-  const maxClicksDateWise = Math.max(
-    ...dateClicks.map((item) => item.cumulativeClicks)
-  );
-
-  console.log(maxClicksDateWise)
-  console.log(dateClicks)
-
-
-  const maxDeviceClicks = Math.max(...deviceClicks.map((item) => item.count))
-
-
+  const maxClicksDateWise = Math.max(1, ...dateClicks.map((item) => item.cumulativeClicks));
+  const maxDeviceClicks = Math.max(1, ...deviceClicks.map((item) => item.count));
 
   return (
     <>
@@ -106,9 +93,7 @@ const Dashboard = () => {
                       <div
                         className={styles.barFill}
                         style={{
-                          width: `${
-                            (item.cumulativesClicks / maxClicksDateWise) * 100
-                          }%`,
+                          width: `${(item.cumulativeClicks / maxClicksDateWise) * 100}%`,
                         }}
                       ></div>
                     </div>

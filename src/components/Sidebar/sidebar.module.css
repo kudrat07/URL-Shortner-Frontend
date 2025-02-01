@@ -59,7 +59,7 @@
 }
 
 /* RESPONSIVNESS */
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .wrapper {
     margin-bottom: 12px;
     padding: 0;

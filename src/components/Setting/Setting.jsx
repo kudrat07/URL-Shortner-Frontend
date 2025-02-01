@@ -20,7 +20,6 @@ const Setting = () => {
   const [username, setUsername] = useState(localStorage.getItem("name"));
 
   useEffect(() => {
-    console.log("update");
   }, [deleteModal]);
 
   const inputHandler = (e) => {

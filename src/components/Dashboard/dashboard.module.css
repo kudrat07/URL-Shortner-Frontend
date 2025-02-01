@@ -8,6 +8,7 @@
 }
 .main {
   width: 75%;
+  height: 100vh;
 }
 
 .navContainer {
@@ -64,11 +65,12 @@
 .chartContainer {
   max-width: 540px;
   width: 50%;
-  margin: 56px auto 0px auto;
+  margin: 56px auto auto auto;
   background: white;
   padding: 24px 16px 24px 24px;
   border: 1px solid #ECECF2;
   border-radius: 8px;
+  min-height: 320px;
 }
 
 .bar {
@@ -105,7 +107,7 @@
 }
 
 /* RESPONSIVNESS */
-@media(max-width:480px) {
+@media(max-width:520px) {
 
   .container{
     flex-direction: column;

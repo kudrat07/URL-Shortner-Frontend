@@ -6,7 +6,8 @@
 }
 .main {
   width: 75%;
-
+  height: 100vh;
+  position: relative;
 }
 .customToast {
   background-color: transparent;
@@ -34,7 +35,6 @@
   background-color: #f1f1f1;
   width: 100%;
   height: calc(100vh - 80px);
-  position: relative;
 
 }
 
@@ -46,6 +46,8 @@
   white-space: nowrap;
   overflow: auto;
   margin: 0 auto;
+  scrollbar-width: thin;  
+  scrollbar-color: transparent transparent;
 }
 .table {
   width: 100%;
@@ -89,6 +91,10 @@
 }
 .tdPara {
   width: 120px;
+}
+
+.sortIcon{
+  cursor: pointer;
 }
 
 .wrap,
@@ -161,9 +167,19 @@
 
 /* RESPONSIVNESS */
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .container {
     flex-direction: column;
+  }
+
+  .content{
+    height: 100%
+  }
+  .tableContainer{
+    width: 94vw
+  }
+  .footer{
+    bottom: 10px;
   }
 
   .header {

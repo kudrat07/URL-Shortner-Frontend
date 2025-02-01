@@ -133,7 +133,7 @@ const Login = () => {
                   className={styles.btn}
                   disabled={loading}
                 >
-                  {loading ? "Loading..." : "Register"}
+                  {loading ? "Loading..." : "Login"}
                 </button>
                 <p className={styles.footerText}>
                   Don’t have an account?

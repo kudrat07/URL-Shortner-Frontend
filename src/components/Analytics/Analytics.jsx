@@ -15,6 +15,7 @@ const Analytics = () => {
   const [data, setData] = useState([]);
   const [newLinkModal, setNewLinkModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(6);
@@ -45,7 +46,21 @@ const Analytics = () => {
     getDetails();
   }, []);
 
-  console.log(data)
+  const sortByDate = () => {
+    const sortedData = [...data].sort((a, b) => {
+      const dateA = new Date(a.updatedAt);
+      const dateB = new Date(b.updatedAt);
+
+      if (sortOrder === "asc") {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+    });
+
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
 
   const newData = (data || []).slice(firstPostIndex, lastPostIndex);
 
@@ -82,7 +97,7 @@ const Analytics = () => {
                   <thead className={styles.thead}>
                     <th className={`${styles.th} ${styles.wrap}`}>
                       Timestamp
-                      <img src={sortIcon} alt="" />
+                      <img src={sortIcon} alt="" onClick={sortByDate} className={styles.sortIcon}/>
                     </th>
                     <th className={styles.th}>Original Link</th>
                     <th className={styles.th}>Short Link</th>
@@ -111,6 +126,7 @@ const Analytics = () => {
                 <h2 className={styles.noData}>No data available</h2>
               </div>
             )}
+          </div>
             <footer className={styles.footer}>
               <Pagination
                 totalPage={data.length}
@@ -118,7 +134,6 @@ const Analytics = () => {
                 setCurrentPage={setCurrentPage}
               />
             </footer>
-          </div>
         </div>
       </div>
     </>

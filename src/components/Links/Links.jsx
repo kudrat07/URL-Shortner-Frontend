@@ -25,6 +25,9 @@ const Links = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const [sortOrder, setSortOrder] = useState("asc"); // For date sorting
+  const [statusSortOrder, setStatusSortOrder] = useState("inactiveFirst"); // For status sorting
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(6);
   const lastPostIndex = currentPage * postPerPage;
@@ -65,7 +68,7 @@ const Links = () => {
     return () => clearInterval(interval);
   }, []);
 
-  //copy link handler
+  // Copy link handler
   const copyUrl = (value) => {
     navigator.clipboard
       .writeText(value)
@@ -81,20 +84,54 @@ const Links = () => {
       });
   };
 
-  // delete link handler
+  // Delete link handler
   const deleteLinkHandler = (id) => {
     setShowModal(!showModal);
     setLinkId(id);
   };
 
+  // Edit link handler
   const editLinkHandler = (id) => {
     setShowEdit(!showEdit);
     setLinkId(id);
   };
 
-  const newData = data.slice(firstPostIndex, lastPostIndex);
+  // Sort by Date
+  const sortByDate = () => {
+    const sortedData = [...data].sort((a, b) => {
+      const dateA = new Date(a.updatedAt);
+      const dateB = new Date(b.updatedAt);
 
-  console.log(newData);
+      if (sortOrder === "asc") {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+    });
+
+    setData(sortedData);
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  // Sort by Status (Active/Inactive)
+  const sortByStatus = () => {
+    const sortedData = [...data].sort((a, b) => {
+      if (statusSortOrder === "inactiveFirst") {
+        if (a.status === "Inactive" && b.status !== "Inactive") return -1;
+        if (a.status !== "Inactive" && b.status === "Inactive") return 1;
+      } else {
+        if (a.status === "Active" && b.status !== "Active") return -1;
+        if (a.status !== "Active" && b.status === "Active") return 1;
+      }
+      return 0;
+    });
+
+    setData(sortedData);
+    setStatusSortOrder(statusSortOrder === "inactiveFirst" ? "activeFirst" : "inactiveFirst");
+  };
+
+  // Paginate the data
+  const newData = data.slice(firstPostIndex, lastPostIndex);
 
   return (
     <>
@@ -129,7 +166,12 @@ const Links = () => {
                   <thead className={styles.thead}>
                     <th className={`${styles.th} ${styles.wrap}`}>
                       Date
-                      <img src={sortIcon} alt="" />
+                      <img
+                        src={sortIcon}
+                        alt="Sort"
+                        onClick={sortByDate}
+                        className={styles.sortIcon}
+                      />
                     </th>
                     <th className={styles.th}>Original Link</th>
                     <th className={styles.th}>Short Link</th>
@@ -137,7 +179,12 @@ const Links = () => {
                     <th className={styles.th}>Clicks</th>
                     <th className={`${styles.th} ${styles.wrap}`}>
                       Status
-                      <img src={sortIcon} alt="" />
+                      <img
+                        src={sortIcon}
+                        alt="Sort"
+                        onClick={sortByStatus}
+                        className={styles.sortIcon}
+                      />
                     </th>
                     <th className={styles.th}>Action</th>
                   </thead>
@@ -199,14 +246,14 @@ const Links = () => {
                 <h2 className={styles.noData}>No data available</h2>
               </div>
             )}
-          <footer className={styles.footer}>
-            <Pagination
-              totalPage={data.length}
-              postPerPage={postPerPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </footer>
           </div>
+            <footer className={styles.footer}>
+              <Pagination
+                totalPage={data.length}
+                postPerPage={postPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </footer>
         </div>
       </div>
     </>
