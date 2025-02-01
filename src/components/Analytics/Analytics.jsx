@@ -17,14 +17,14 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(6);
+  const [postPerPage] = useState(6);
   const lastPostIndex = currentPage * postPerPage;
   const firstPostIndex = lastPostIndex - postPerPage;
 
   const getDetails = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${BACKEND_URL}/allUrls/${id}`, {
+      const response = await fetch(`${BACKEND_URL}/analytics/${id}`, {
         method: "GET",
       });
 
@@ -33,7 +33,7 @@ const Analytics = () => {
         toast.error(result.message);
         return;
       }
-      setData(result.urls);
+      setData(Array.isArray(result.analyticsData) ? result.analyticsData : []);
     } catch (error) {
       toast.error("Something went wrong while fetching data");
     } finally {
@@ -45,8 +45,9 @@ const Analytics = () => {
     getDetails();
   }, []);
 
-  const newData = data.slice(firstPostIndex, lastPostIndex);
+  console.log(data)
 
+  const newData = (data || []).slice(firstPostIndex, lastPostIndex);
 
   return (
     <>
@@ -85,22 +86,20 @@ const Analytics = () => {
                     </th>
                     <th className={styles.th}>Original Link</th>
                     <th className={styles.th}>Short Link</th>
-                    <th className={styles.th}>ip address</th>
+                    <th className={styles.th}>IP Address</th>
                     <th className={styles.th}>User Device</th>
                   </thead>
                   <tbody className={styles.tbody}>
                     {newData.map((item) => (
                       <tr className={styles.tr} key={item._id}>
-                        <td className={styles.td}>{item.updatedAt}</td>
+                        <td className={styles.td}>{item.formattedDate}</td>
                         <td className={styles.td}>
                           <p className={styles.tdPara}>{item.originalUrl}</p>
                         </td>
                         <td className={`${styles.td} ${styles.wrap}`}>
                           <p className={styles.tdPara}>{item.shortUrl}</p>
                         </td>
-
                         <td className={styles.td}>{item.ipAddress}</td>
-
                         <td className={styles.td}>{item.os}</td>
                       </tr>
                     ))}
