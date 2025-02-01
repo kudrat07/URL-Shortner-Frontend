@@ -40,11 +40,13 @@ const Edit = ({ setShowEdit, linkId }) => {
     } catch (error) {
       toast.error("Something went wrong! Network error");
     }
-  };
 
+  };
+  
   useEffect(() => {
     getUrl();
   }, []);
+
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -89,10 +91,17 @@ const Edit = ({ setShowEdit, linkId }) => {
     if (validateError()) {
       try {
         const requestData = { ...linkData };
-      if (!isChecked) {
-        delete requestData.expiryDate; 
-      }
-      console.log(requestData)
+  
+        // Ensure expiryDate is in GMT if set
+        if (isChecked && linkData.expiryDate) {
+          const gmtExpiryDate = new Date(linkData.expiryDate).toISOString();
+          requestData.expiryDate = gmtExpiryDate;
+        } else {
+          delete requestData.expiryDate;
+        }
+  
+        console.log("Request Data:", requestData);
+  
         const response = await fetch(`${BACKEND_URL}/updateUrl/${linkId}`, {
           method: "PUT",
           headers: {
@@ -100,25 +109,26 @@ const Edit = ({ setShowEdit, linkId }) => {
           },
           body: JSON.stringify(requestData),
         });
+  
         const result = await response.json();
         if (!response.ok) {
           toast.error(result.message);
           return;
         }
-        if (response.ok) {
-          toast.success("URL updated successfully!");
-          setShowEdit(false);
-          setLinkData({
-            originalUrl: "",
-            remark: "",
-            expiryDate: "",
-          });
-        }
+  
+        toast.success("URL updated successfully!");
+        setShowEdit(false);
+        setLinkData({
+          originalUrl: "",
+          remark: "",
+          expiryDate: "",
+        });
       } catch (error) {
         toast.error("Something went wrong while updating link");
       }
     }
   };
+  
 
   const formatDateForInput = (date) => {
     if (!date) return "";

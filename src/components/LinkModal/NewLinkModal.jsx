@@ -55,38 +55,54 @@ const NewLinkModal = ({ newLinkModal, setNewLinkModal }) => {
 
   }
 
-  const handleSubmit = async(e)=> {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(validateError()){
+  
+    if (validateError()) {
       try {
+        let expiryDateGMT = null;
+  
+        // Convert expiry date to GMT format if provided
+        if (linkData.expiryDate) {
+          const localDate = new Date(linkData.expiryDate);
+          expiryDateGMT = localDate.toISOString(); // Always in UTC/GMT timezone
+        }
+  
+        const requestData = {
+          ...linkData,
+          expiryDate: expiryDateGMT,
+        };
+  
         const response = await fetch(`${BACKEND_URL}/url/${id}`, {
-          method:"POST",
-          headers:{
+          method: "POST",
+          headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(linkData)
+          body: JSON.stringify(requestData),
         });
+  
         const result = await response.json();
-        if(!response.ok) {
-          toast.error(result.message)
-          return
+  
+        if (!response.ok) {
+          toast.error(result.message);
+          return;
         }
-        if(response.ok) {
+  
+        if (response.ok) {
           toast.success("Link created");
-          setNewLinkModal(!newLinkModal)
+          setNewLinkModal(!newLinkModal);
           setLinkData({
-            originalUrl:"",
-            remark:"",
-            expiryDate:""
-          })
+            originalUrl: "",
+            remark: "",
+            expiryDate: "",
+          });
         }
-        
       } catch (error) {
-        toast.error("Something went wrong while creating link");
-        
+        toast.error("Something went wrong while creating the link");
       }
     }
-  }
+  };
+  
 
 
 

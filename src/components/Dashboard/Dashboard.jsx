@@ -55,8 +55,16 @@ const Dashboard = () => {
     getStats();
   }, []);
 
-  const maxClicksDateWise = Math.max(1, ...dateClicks.map((item) => item.cumulativeClicks));
-  const maxDeviceClicks = Math.max(1, ...deviceClicks.map((item) => item.count));
+  const maxClicksDateWise = Math.max(
+    1,
+    ...dateClicks.map((item) => item.cumulativeClicks)
+  );
+  const maxDeviceClicks = Math.max(
+    1,
+    ...deviceClicks.map((item) => item.count)
+  );
+
+  console.log(deviceClicks);
 
   return (
     <>
@@ -93,7 +101,9 @@ const Dashboard = () => {
                       <div
                         className={styles.barFill}
                         style={{
-                          width: `${(item.cumulativeClicks / maxClicksDateWise) * 100}%`,
+                          width: `${
+                            (item.cumulativeClicks / maxClicksDateWise) * 100
+                          }%`,
                         }}
                       ></div>
                     </div>
@@ -114,11 +124,16 @@ const Dashboard = () => {
                       <div
                         className={styles.barFill}
                         style={{
-                          width: `${(item.count / maxDeviceClicks) * 100}%`,
+                          width:
+                            item.count > 0
+                              ? `${(item.count / maxDeviceClicks) * 100}%`
+                              : 0,
                         }}
                       ></div>
                     </div>
-                    <span className={styles.value}>{item.count}</span>
+                    <span className={styles.value}>
+                      {item.count >= 0 ? item.count : ""}
+                    </span>
                   </div>
                 ))}
               </div>
